@@ -11,6 +11,9 @@ export async function middleware(req) {
   const res = NextResponse.next();
   const supabase = createMiddlewareClient({ req, res });
 
+  // Get the base URL for redirects
+  const baseUrl = req.nextUrl.origin;
+
   // Check if the user is authenticated
   const {
     data: { session },
@@ -23,7 +26,7 @@ export async function middleware(req) {
   if (path.startsWith("/admin") && path !== "/admin/login") {
     // If there's no session, redirect to login
     if (!session) {
-      const redirectUrl = new URL("/admin/login", req.url);
+      const redirectUrl = new URL("/admin/login", baseUrl);
       return NextResponse.redirect(redirectUrl);
     }
 
@@ -33,7 +36,7 @@ export async function middleware(req) {
       await supabase.auth.signOut();
 
       // Redirect to login with error
-      const redirectUrl = new URL("/admin/login", req.url);
+      const redirectUrl = new URL("/admin/login", baseUrl);
       redirectUrl.searchParams.set("error", "unauthorized");
       return NextResponse.redirect(redirectUrl);
     }

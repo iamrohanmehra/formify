@@ -8,6 +8,9 @@ export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
 
+  // Get the base URL from the request
+  const baseUrl = new URL(req.url).origin;
+
   if (code) {
     await supabase.auth.exchangeCodeForSession(code);
 
@@ -24,10 +27,10 @@ export async function GET(req) {
 
     // If the user is authorized, redirect directly to admin
     if (session && AUTHORIZED_ADMINS.includes(session.user.email)) {
-      return NextResponse.redirect(new URL("/admin", req.url));
+      return NextResponse.redirect(new URL("/admin", baseUrl));
     }
   }
 
   // If not authorized or no code, redirect to login
-  return NextResponse.redirect(new URL("/admin/login", req.url));
+  return NextResponse.redirect(new URL("/admin/login", baseUrl));
 }

@@ -80,10 +80,11 @@ export default function AdminLogin() {
       setLoading(true);
       setError(null);
 
+      // Get the current URL origin for the redirect
       const redirectTo =
         typeof window !== "undefined"
-          ? `${window.location.origin}`
-          : process.env.NEXT_PUBLIC_SITE_URL;
+          ? `${window.location.origin}/api/auth/callback`
+          : `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`;
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
