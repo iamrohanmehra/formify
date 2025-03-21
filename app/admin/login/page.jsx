@@ -80,10 +80,15 @@ export default function AdminLogin() {
       setLoading(true);
       setError(null);
 
+      const redirectTo =
+        typeof window !== "undefined"
+          ? `${window.location.origin}`
+          : process.env.NEXT_PUBLIC_SITE_URL;
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/api/auth/callback`,
+          redirectTo: redirectTo,
         },
       });
 
