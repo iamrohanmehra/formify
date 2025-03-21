@@ -635,20 +635,20 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-50 font-karla flex flex-col">
       {/* Header */}
-      <header className="w-full bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-10">
+      <header className="w-full bg-white border-b border-gray-200 py-3 px-4 sm:py-4 sm:px-6 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="mr-2 text-[#37404A]"
+              className="mr-2 text-[#37404A] sm:w-5 sm:h-5"
             >
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
@@ -656,7 +656,7 @@ export default function AdminDashboard() {
               <line x1="16" y1="17" x2="8" y2="17"></line>
               <polyline points="10 9 9 9 8 9"></polyline>
             </svg>
-            <h1 className="text-xl font-medium text-[#37404A]">
+            <h1 className="text-lg sm:text-xl font-medium text-[#37404A]">
               Formify Admin
             </h1>
           </div>
@@ -664,7 +664,8 @@ export default function AdminDashboard() {
           <Button
             onClick={handleSignOut}
             variant="outline"
-            className="text-[#37404A] border-[#37404A] hover:bg-gray-100 transition-colors cursor-pointer"
+            size="sm"
+            className="text-[#37404A] border-[#37404A] text-xs sm:text-sm hover:bg-gray-100 transition-colors cursor-pointer"
           >
             Sign Out
           </Button>
@@ -672,7 +673,7 @@ export default function AdminDashboard() {
       </header>
 
       {/* Main Content */}
-      <div className="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
+      <div className="flex-1 max-w-7xl mx-auto w-full px-4 py-4 sm:px-6 sm:py-8">
         {loading && !error && (
           <div className="flex justify-center items-center h-64">
             <div className="flex items-center space-x-2">
@@ -695,44 +696,44 @@ export default function AdminDashboard() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="text-red-500 mr-2"
+                className="text-red-500 mr-2 flex-shrink-0"
               >
                 <circle cx="12" cy="12" r="10"></circle>
                 <line x1="12" y1="8" x2="12" y2="12"></line>
                 <line x1="12" y1="16" x2="12.01" y2="16"></line>
               </svg>
-              <p className="text-red-700">{error}</p>
+              <p className="text-red-700 text-sm sm:text-base">{error}</p>
             </div>
           </div>
         )}
 
         {!loading && !error && (
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {/* Dashboard View (Forms) */}
             {!showSubmissions && (
               <>
                 {/* Forms Section */}
-                <section className="mb-8">
-                  <h2 className="text-[24px] font-[500] text-[#37404A] mb-4">
+                <section className="mb-6 sm:mb-8">
+                  <h2 className="text-xl sm:text-[24px] font-[500] text-[#37404A] mb-3 sm:mb-4">
                     Available Forms
                   </h2>
-                  <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+                  <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden overflow-x-auto">
                     <Table>
                       <TableHeader className="bg-gray-50">
                         <TableRow>
-                          <TableHead className="w-[25%] font-medium text-[#37404A]">
+                          <TableHead className="w-[25%] font-medium text-[#37404A] text-sm sm:text-base">
                             Form Title
                           </TableHead>
-                          <TableHead className="w-[20%] font-medium text-[#37404A]">
+                          <TableHead className="w-[20%] font-medium text-[#37404A] text-sm sm:text-base hidden sm:table-cell">
                             Form Type
                           </TableHead>
-                          <TableHead className="w-[15%] font-medium text-[#37404A]">
+                          <TableHead className="w-[15%] font-medium text-[#37404A] text-sm sm:text-base">
                             Submissions
                           </TableHead>
-                          <TableHead className="w-[20%] font-medium text-[#37404A]">
+                          <TableHead className="w-[20%] font-medium text-[#37404A] text-sm sm:text-base">
                             Status
                           </TableHead>
-                          <TableHead className="w-[20%] font-medium text-[#37404A]">
+                          <TableHead className="w-[20%] font-medium text-[#37404A] text-sm sm:text-base">
                             Actions
                           </TableHead>
                         </TableRow>
@@ -742,7 +743,7 @@ export default function AdminDashboard() {
                           <TableRow>
                             <TableCell
                               colSpan={5}
-                              className="text-center py-8 text-gray-500"
+                              className="text-center py-8 text-gray-500 text-sm sm:text-base"
                             >
                               No forms available
                             </TableCell>
@@ -757,14 +758,14 @@ export default function AdminDashboard() {
                                 key={form.id}
                                 className="hover:bg-gray-50"
                               >
-                                <TableCell className="font-medium w-[25%] text-[#37404A]">
+                                <TableCell className="font-medium w-[25%] text-[#37404A] text-sm sm:text-base">
                                   {form.title}
                                 </TableCell>
-                                <TableCell className="w-[20%] text-gray-600">
+                                <TableCell className="w-[20%] text-gray-600 text-sm sm:text-base hidden sm:table-cell">
                                   {form.form_type}
                                 </TableCell>
                                 <TableCell className="w-[15%]">
-                                  <Badge className="bg-[#37404A]/10 text-[#37404A] hover:bg-[#37404A]/20">
+                                  <Badge className="bg-[#37404A]/10 text-[#37404A] hover:bg-[#37404A]/20 text-xs sm:text-sm">
                                     {submissionCount}
                                   </Badge>
                                 </TableCell>
@@ -780,11 +781,11 @@ export default function AdminDashboard() {
                                       }
                                     />
                                     <span
-                                      className={
+                                      className={`text-xs sm:text-sm ${
                                         form.is_active
                                           ? "text-green-600"
                                           : "text-red-600"
-                                      }
+                                      }`}
                                     >
                                       {form.is_active ? "Active" : "Inactive"}
                                     </span>
@@ -793,8 +794,9 @@ export default function AdminDashboard() {
                                 <TableCell className="w-[20%]">
                                   <Button
                                     variant="outline"
+                                    size="sm"
                                     onClick={() => handleFormSelect(form)}
-                                    className="bg-white hover:bg-gray-100 text-[#37404A] border-gray-300 rounded-md cursor-pointer"
+                                    className="bg-white hover:bg-gray-100 text-[#37404A] border-gray-300 rounded-md text-xs sm:text-sm cursor-pointer whitespace-nowrap"
                                   >
                                     View Submissions
                                   </Button>
@@ -812,15 +814,15 @@ export default function AdminDashboard() {
 
             {/* Submissions Section */}
             {showSubmissions && selectedForm && (
-              <section className="mb-8">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-[24px] font-[500] text-[#37404A]">
+              <section className="mb-6 sm:mb-8">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-0">
+                  <h2 className="text-xl sm:text-[24px] font-[500] text-[#37404A]">
                     {selectedForm.title} Submissions
                   </h2>
                   <Button
                     variant="outline"
                     onClick={() => setShowSubmissions(false)}
-                    className="bg-white hover:bg-gray-100 text-[#37404A] border-gray-300 rounded-md flex items-center gap-2 cursor-pointer"
+                    className="bg-white hover:bg-gray-100 text-[#37404A] border-gray-300 rounded-md flex items-center gap-2 text-xs sm:text-sm cursor-pointer self-start"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -840,42 +842,42 @@ export default function AdminDashboard() {
                   </Button>
                 </div>
 
-                <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-64">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-3 sm:gap-4">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                    <div className="relative w-full sm:w-64">
                       <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
                       <Input
                         placeholder="Search submissions..."
                         value={filters.search}
                         onChange={handleSearchChange}
                         onKeyDown={handleSearchKeyDown}
-                        className="pl-8 border-gray-300"
+                        className="pl-8 border-gray-300 text-sm w-full"
                       />
                     </div>
 
                     <Button
                       variant="outline"
                       onClick={() => setFilterDialogOpen(true)}
-                      className="flex items-center gap-2 border-gray-300 cursor-pointer"
+                      className="flex items-center gap-2 border-gray-300 text-xs sm:text-sm cursor-pointer"
                     >
                       <Filter className="h-4 w-4" />
                       <span>Filter</span>
                     </Button>
                   </div>
 
-                  <div className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                  <div className="text-xs sm:text-sm text-gray-500 bg-gray-100 px-2 py-1 sm:px-3 rounded-full text-center sm:text-right">
                     {pagination.total} total submissions
                   </div>
                 </div>
 
                 {/* Filters section */}
                 {filters.startDate || filters.endDate ? (
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="text-sm">Filters:</div>
+                  <div className="flex flex-wrap items-center gap-2 mb-4">
+                    <div className="text-xs sm:text-sm">Filters:</div>
                     {filters.startDate && (
                       <Badge
                         variant="outline"
-                        className="flex items-center gap-1"
+                        className="flex items-center gap-1 text-xs"
                       >
                         From: {new Date(filters.startDate).toLocaleDateString()}
                       </Badge>
@@ -883,7 +885,7 @@ export default function AdminDashboard() {
                     {filters.endDate && (
                       <Badge
                         variant="outline"
-                        className="flex items-center gap-1"
+                        className="flex items-center gap-1 text-xs"
                       >
                         To: {new Date(filters.endDate).toLocaleDateString()}
                       </Badge>
@@ -899,8 +901,8 @@ export default function AdminDashboard() {
                   </div>
                 ) : null}
 
-                {/* Submissions table */}
-                <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mt-4">
+                {/* Responsive Table Container */}
+                <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mt-4 overflow-x-auto">
                   <Table>
                     <TableHeader className="bg-gray-50">
                       <TableRow>
@@ -908,7 +910,7 @@ export default function AdminDashboard() {
                           (header) => (
                             <TableHead
                               key={header.key}
-                              className="font-medium text-[#37404A] cursor-pointer hover:text-[#37404A]/70"
+                              className="font-medium text-[#37404A] cursor-pointer hover:text-[#37404A]/70 text-xs sm:text-sm whitespace-nowrap"
                               onClick={() => handleSortChange(header.key)}
                             >
                               <div className="flex items-center">
@@ -916,7 +918,7 @@ export default function AdminDashboard() {
                                 {sorting.field === header.key && (
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className={`ml-1 h-4 w-4 ${
+                                    className={`ml-1 h-3 w-3 sm:h-4 sm:w-4 ${
                                       sorting.order === "desc"
                                         ? "transform rotate-180"
                                         : ""
@@ -937,7 +939,7 @@ export default function AdminDashboard() {
                             </TableHead>
                           )
                         )}
-                        <TableHead className="font-medium text-[#37404A] text-right w-[80px]">
+                        <TableHead className="font-medium text-[#37404A] text-right w-[80px] text-xs sm:text-sm whitespace-nowrap">
                           Actions
                         </TableHead>
                       </TableRow>
@@ -950,6 +952,7 @@ export default function AdminDashboard() {
                               (header) => (
                                 <TableCell
                                   key={`${submission.id}-${header.key}`}
+                                  className="text-xs sm:text-sm"
                                 >
                                   {getSubmissionValue(submission, header.key)}
                                 </TableCell>
@@ -960,7 +963,7 @@ export default function AdminDashboard() {
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => handleDeleteClick(submission)}
-                                className="text-red-500 hover:text-red-700 hover:bg-red-50 cursor-pointer"
+                                className="text-red-500 hover:text-red-700 hover:bg-red-50 cursor-pointer p-1 sm:p-2"
                               >
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
@@ -988,13 +991,13 @@ export default function AdminDashboard() {
                         <TableRow>
                           <TableCell
                             colSpan={
-                              getTableHeaders(selectedForm.form_type).length
+                              getTableHeaders(selectedForm.form_type).length + 1
                             }
-                            className="text-center py-8"
+                            className="text-center py-8 text-xs sm:text-sm"
                           >
                             {loading ? (
                               <div className="flex justify-center">
-                                <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+                                <Loader2 className="h-5 w-5 sm:h-6 sm:w-6 animate-spin text-gray-400" />
                               </div>
                             ) : (
                               "No submissions found"
@@ -1008,9 +1011,9 @@ export default function AdminDashboard() {
 
                 {/* Pagination */}
                 {pagination.totalPages > 1 && (
-                  <div className="mt-4 flex justify-center">
+                  <div className="mt-4 flex justify-center overflow-x-auto">
                     <Pagination>
-                      <PaginationContent>
+                      <PaginationContent className="flex flex-wrap justify-center">
                         <PaginationItem>
                           <PaginationPrevious
                             onClick={() =>
@@ -1024,17 +1027,81 @@ export default function AdminDashboard() {
                             }
                           />
                         </PaginationItem>
-                        {Array.from({ length: pagination.totalPages }).map(
-                          (_, index) => (
-                            <PaginationItem key={index}>
+                        {pagination.totalPages <= 5 ? (
+                          // Show all pages if 5 or fewer
+                          Array.from({ length: pagination.totalPages }).map(
+                            (_, index) => (
+                              <PaginationItem key={index}>
+                                <PaginationLink
+                                  isActive={pagination.page === index + 1}
+                                  onClick={() => handlePageChange(index + 1)}
+                                  className="text-xs sm:text-sm"
+                                >
+                                  {index + 1}
+                                </PaginationLink>
+                              </PaginationItem>
+                            )
+                          )
+                        ) : (
+                          // Show limited pages if more than 5
+                          <>
+                            {/* Always show first page */}
+                            <PaginationItem>
                               <PaginationLink
-                                isActive={pagination.page === index + 1}
-                                onClick={() => handlePageChange(index + 1)}
+                                isActive={pagination.page === 1}
+                                onClick={() => handlePageChange(1)}
+                                className="text-xs sm:text-sm"
                               >
-                                {index + 1}
+                                1
                               </PaginationLink>
                             </PaginationItem>
-                          )
+
+                            {/* Show ellipsis if not on first 3 pages */}
+                            {pagination.page > 3 && (
+                              <PaginationItem>
+                                <div className="flex h-9 w-9 items-center justify-center text-xs sm:text-sm">
+                                  ...
+                                </div>
+                              </PaginationItem>
+                            )}
+
+                            {/* Show current page and adjacent pages */}
+                            {pagination.page !== 1 &&
+                              pagination.page !== pagination.totalPages && (
+                                <PaginationItem>
+                                  <PaginationLink
+                                    isActive={true}
+                                    className="text-xs sm:text-sm"
+                                  >
+                                    {pagination.page}
+                                  </PaginationLink>
+                                </PaginationItem>
+                              )}
+
+                            {/* Show ellipsis if not on last 3 pages */}
+                            {pagination.page < pagination.totalPages - 2 && (
+                              <PaginationItem>
+                                <div className="flex h-9 w-9 items-center justify-center text-xs sm:text-sm">
+                                  ...
+                                </div>
+                              </PaginationItem>
+                            )}
+
+                            {/* Always show last page */}
+                            <PaginationItem>
+                              <PaginationLink
+                                isActive={
+                                  pagination.page === pagination.totalPages
+                                }
+                                onClick={() =>
+                                  handlePageChange(pagination.totalPages)
+                                }
+                                className="text-xs sm:text-sm"
+                              >
+                                {pagination.totalPages}
+                              </PaginationLink>
+                            </PaginationItem>
+                          </>
                         )}
                         <PaginationItem>
                           <PaginationNext
@@ -1060,9 +1127,9 @@ export default function AdminDashboard() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-4 mt-auto">
-        <div className="max-w-7xl mx-auto px-6">
-          <p className="text-sm text-gray-500 text-center">
+      <footer className="bg-white border-t border-gray-200 py-3 sm:py-4 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <p className="text-xs sm:text-sm text-gray-500 text-center">
             © {new Date().getFullYear()} Formify Admin Panel. All rights
             reserved.
           </p>
@@ -1071,12 +1138,12 @@ export default function AdminDashboard() {
 
       {/* Confirm Modal */}
       <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
-        <DialogContent className="sm:max-w-md rounded-lg">
+        <DialogContent className="sm:max-w-md rounded-lg max-w-[95vw] p-4 sm:p-6">
           <DialogHeader>
-            <DialogTitle className="text-[#37404A] text-xl">
+            <DialogTitle className="text-[#37404A] text-lg sm:text-xl">
               Confirm Status Change
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-sm">
               {formToToggle && (
                 <>
                   Are you sure you want to{" "}
@@ -1092,8 +1159,8 @@ export default function AdminDashboard() {
             <div
               className={
                 formToToggle.currentStatus
-                  ? "text-red-600 mt-2 p-3 bg-red-50 rounded-md border border-red-100"
-                  : "text-green-600 mt-2 p-3 bg-green-50 rounded-md border border-green-100"
+                  ? "text-red-600 mt-2 p-2 sm:p-3 bg-red-50 rounded-md border border-red-100 text-xs sm:text-sm"
+                  : "text-green-600 mt-2 p-2 sm:p-3 bg-green-50 rounded-md border border-green-100 text-xs sm:text-sm"
               }
             >
               {formToToggle.currentStatus
@@ -1102,22 +1169,24 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          <DialogFooter className="flex justify-end gap-2 sm:justify-end">
+          <DialogFooter className="flex justify-end gap-2 sm:justify-end mt-4">
             <Button
               type="button"
               variant="outline"
+              size="sm"
               onClick={() => handleConfirmToggle(false)}
-              className="border-gray-300 cursor-pointer"
+              className="border-gray-300 text-xs sm:text-sm cursor-pointer"
             >
               Cancel
             </Button>
             <Button
               type="button"
+              size="sm"
               onClick={() => handleConfirmToggle(true)}
               className={
                 formToToggle?.currentStatus
-                  ? "bg-red-600 hover:bg-red-700 cursor-pointer"
-                  : "bg-green-600 hover:bg-green-700 cursor-pointer"
+                  ? "bg-red-600 hover:bg-red-700 text-xs sm:text-sm cursor-pointer"
+                  : "bg-green-600 hover:bg-green-700 text-xs sm:text-sm cursor-pointer"
               }
             >
               Confirm
@@ -1131,12 +1200,12 @@ export default function AdminDashboard() {
         open={showDeleteConfirmModal}
         onOpenChange={setShowDeleteConfirmModal}
       >
-        <DialogContent className="sm:max-w-md rounded-lg">
+        <DialogContent className="sm:max-w-md rounded-lg max-w-[95vw] p-4 sm:p-6">
           <DialogHeader>
-            <DialogTitle className="text-[#37404A] text-xl">
+            <DialogTitle className="text-[#37404A] text-lg sm:text-xl">
               Confirm Deletion
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-sm">
               {submissionToDelete && (
                 <>Are you sure you want to delete this submission?</>
               )}
@@ -1144,24 +1213,26 @@ export default function AdminDashboard() {
           </DialogHeader>
 
           {/* Warning message */}
-          <div className="text-red-600 mt-2 p-3 bg-red-50 rounded-md border border-red-100">
+          <div className="text-red-600 mt-2 p-2 sm:p-3 bg-red-50 rounded-md border border-red-100 text-xs sm:text-sm">
             This action cannot be undone. The submission will be permanently
             deleted from the database.
           </div>
 
-          <DialogFooter className="flex justify-end gap-2 sm:justify-end">
+          <DialogFooter className="flex justify-end gap-2 sm:justify-end mt-4">
             <Button
               type="button"
               variant="outline"
+              size="sm"
               onClick={() => handleConfirmDelete(false)}
-              className="border-gray-300 cursor-pointer"
+              className="border-gray-300 text-xs sm:text-sm cursor-pointer"
             >
               Cancel
             </Button>
             <Button
               type="button"
+              size="sm"
               onClick={() => handleConfirmDelete(true)}
-              className="bg-red-600 hover:bg-red-700 cursor-pointer"
+              className="bg-red-600 hover:bg-red-700 text-xs sm:text-sm cursor-pointer"
             >
               Delete
             </Button>
@@ -1171,17 +1242,19 @@ export default function AdminDashboard() {
 
       {/* Filter Dialog */}
       <Dialog open={filterDialogOpen} onOpenChange={setFilterDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] max-w-[95vw] p-4 sm:p-6">
           <DialogHeader>
-            <DialogTitle>Filter Submissions</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-lg sm:text-xl">
+              Filter Submissions
+            </DialogTitle>
+            <DialogDescription className="text-xs sm:text-sm">
               Set date range to filter submissions
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <label className="text-right text-sm">From</label>
+          <div className="grid gap-3 sm:gap-4 py-3 sm:py-4">
+            <div className="grid grid-cols-4 items-center gap-2 sm:gap-4">
+              <label className="text-right text-xs sm:text-sm">From</label>
               <div className="col-span-3">
                 <Input
                   type="date"
@@ -1189,13 +1262,13 @@ export default function AdminDashboard() {
                   onChange={(e) =>
                     setFilters({ ...filters, startDate: e.target.value })
                   }
-                  className="w-full"
+                  className="w-full text-xs sm:text-sm h-8 sm:h-10"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
-              <label className="text-right text-sm">To</label>
+            <div className="grid grid-cols-4 items-center gap-2 sm:gap-4">
+              <label className="text-right text-xs sm:text-sm">To</label>
               <div className="col-span-3">
                 <Input
                   type="date"
@@ -1203,21 +1276,26 @@ export default function AdminDashboard() {
                   onChange={(e) =>
                     setFilters({ ...filters, endDate: e.target.value })
                   }
-                  className="w-full"
+                  className="w-full text-xs sm:text-sm h-8 sm:h-10"
                 />
               </div>
             </div>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="gap-2">
             <Button
               variant="outline"
+              size="sm"
               onClick={handleFilterReset}
-              className="cursor-pointer"
+              className="text-xs sm:text-sm cursor-pointer"
             >
               Reset
             </Button>
-            <Button onClick={handleFilterApply} className="cursor-pointer">
+            <Button
+              onClick={handleFilterApply}
+              size="sm"
+              className="text-xs sm:text-sm cursor-pointer"
+            >
               Apply Filters
             </Button>
           </DialogFooter>
@@ -1231,22 +1309,22 @@ export default function AdminDashboard() {
           setFullTextModal((prev) => ({ ...prev, isOpen: open }))
         }
       >
-        <DialogContent className="sm:max-w-md md:max-w-lg lg:max-w-2xl">
+        <DialogContent className="sm:max-w-md md:max-w-lg lg:max-w-2xl max-w-[95vw] p-4 sm:p-6">
           <DialogHeader className="border-b pb-3">
             <div className="flex justify-between items-center">
-              <DialogTitle className="text-[#37404A] text-xl font-medium">
+              <DialogTitle className="text-[#37404A] text-lg sm:text-xl font-medium">
                 {fullTextModal.title}
               </DialogTitle>
             </div>
           </DialogHeader>
 
-          <div className="mt-4 p-5 bg-gray-50 rounded-lg border border-gray-200 max-h-[60vh] overflow-y-auto shadow-inner">
+          <div className="mt-4 p-3 sm:p-5 bg-gray-50 rounded-lg border border-gray-200 max-h-[50vh] sm:max-h-[60vh] overflow-y-auto shadow-inner">
             {fullTextModal.content &&
               fullTextModal.content.split(/\n+/).map((paragraph, index) =>
                 paragraph.trim() ? (
                   <p
                     key={index}
-                    className="text-gray-700 leading-relaxed mb-3 last:mb-0 break-words whitespace-normal"
+                    className="text-gray-700 text-xs sm:text-sm leading-relaxed mb-3 last:mb-0 break-words whitespace-normal"
                     style={{ maxWidth: "100%", wordWrap: "break-word" }}
                   >
                     {paragraph}
@@ -1260,7 +1338,8 @@ export default function AdminDashboard() {
               onClick={() =>
                 setFullTextModal((prev) => ({ ...prev, isOpen: false }))
               }
-              className="bg-[#37404A] hover:bg-[#37404A]/90 transition-colors cursor-pointer"
+              size="sm"
+              className="bg-[#37404A] hover:bg-[#37404A]/90 transition-colors text-xs sm:text-sm cursor-pointer"
             >
               Close
             </Button>
