@@ -1,0 +1,13 @@
+{
+  "name": "formify-migration-scripts",
+  "version": "1.0.0",
+  "description": "Database migration scripts for Formify",
+  "main": "run-migration.js",
+  "scripts": {
+    "migrate": "node run-migration.js"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.1"
+  },
+  "type": "module"
+}
