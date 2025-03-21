@@ -30,7 +30,7 @@ export async function GET() {
           : createClient(supabaseUrl, supabaseAnonKey);
 
         // Check if form_submissions table exists by trying to query it
-        const { data: testData, error: testError } = await supabase
+        const { data: _testData, error: testError } = await supabase
           .from("form_submissions")
           .select("id")
           .limit(1);

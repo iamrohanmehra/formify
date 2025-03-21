@@ -18,7 +18,7 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const cookieStore = cookies();
-  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+  const _supabase = createServerComponentClient({ cookies: () => cookieStore });
 
   return (
     <html lang="en">

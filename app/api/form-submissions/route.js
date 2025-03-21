@@ -35,7 +35,7 @@ export async function GET(request) {
     }
 
     // Execute the query
-    const { data, error, count } = await query;
+    const { data, error /* count */ } = await query;
 
     if (error) {
       console.error("Error fetching form submissions:", error);
@@ -46,7 +46,7 @@ export async function GET(request) {
     }
 
     // Get total count separately
-    const { count: totalCount, error: countError } = await supabase
+    const { count: _count, error: countError } = await supabase
       .from("form_submissions")
       .select("*", { count: "exact", head: true })
       .eq(formType ? "form_type" : "id", formType || data[0]?.id || "");
@@ -59,10 +59,10 @@ export async function GET(request) {
       success: true,
       data,
       pagination: {
-        total: totalCount || 0,
+        total: _count || 0,
         offset,
         limit,
-        hasMore: offset + limit < (totalCount || 0),
+        hasMore: offset + limit < (_count || 0),
       },
     });
   } catch (error) {

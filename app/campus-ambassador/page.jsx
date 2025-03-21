@@ -13,7 +13,7 @@ import { ChevronRight, ChevronUp, ChevronDown } from "lucide-react";
 import FormInactive from "../components/FormInactive";
 
 export default function CampusAmbassadorForm() {
-  const router = useRouter();
+  const _router = useRouter();
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -535,7 +535,7 @@ export default function CampusAmbassadorForm() {
                 Thank you for applying!
               </h2>
               <p className="text-[18px] leading-[28px] text-[#37404AB3]">
-                We've received your Campus Ambassador application and will
+                We&apos;ve received your Campus Ambassador application and will
                 review it shortly.
               </p>
 

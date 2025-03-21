@@ -16,7 +16,7 @@ const AUTHORIZED_ADMINS = [
 export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [user, setUser] = useState(null);
+  const [_user, setUser] = useState(null);
   const router = useRouter();
   const supabase = createClientComponentClient({
     options: {

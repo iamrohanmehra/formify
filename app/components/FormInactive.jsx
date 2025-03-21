@@ -25,7 +25,7 @@ export default function FormInactive({ formTitle }) {
             </h2>
 
             <p className="text-[18px] leading-[28px] text-[#37404AB3]">
-              We're sorry, but {formTitle || "this form"} is currently not
+              We&apos;re sorry, but {formTitle || "this form"} is currently not
               accepting submissions.
             </p>
 

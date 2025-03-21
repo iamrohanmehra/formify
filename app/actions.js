@@ -15,20 +15,20 @@ const mockSupabase = {
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-let supabase;
+let _supabase;
 
 try {
   if (!supabaseUrl || !supabaseServiceKey) {
     console.warn("Missing Supabase service role key, using mock client");
-    supabase = mockSupabase;
+    _supabase = mockSupabase;
   } else {
     // Only import the real client if we have credentials
     const { createClient } = require("@supabase/supabase-js");
-    supabase = createClient(supabaseUrl, supabaseServiceKey);
+    _supabase = createClient(supabaseUrl, supabaseServiceKey);
   }
 } catch (error) {
   console.warn("Error initializing Supabase client, using mock client", error);
-  supabase = mockSupabase;
+  _supabase = mockSupabase;
 }
 
 // Check if a form is active
@@ -215,14 +215,14 @@ export async function submitForm(formData) {
         JSON.stringify(formData, null, 2)
       );
 
-      let sheetsAttempted = false;
+      let _sheetsAttempted = false;
 
       try {
         // Set a timeout for the fetch request
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 second timeout
 
-        sheetsAttempted = true;
+        _sheetsAttempted = true;
         console.time("Google Sheets API call");
         const response = await fetch(`${baseUrl}/api/submit-form`, {
           method: "POST",

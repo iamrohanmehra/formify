@@ -116,7 +116,7 @@ export async function POST(request) {
     }
 
     // First, try to get existing form data (to preserve title and description if already set)
-    const { data: existingForm, error: getError } = await supabase
+    const { data: existingForm, error: _getError } = await supabase
       .from("form_status")
       .select("title, description")
       .eq("form_type", form_type)

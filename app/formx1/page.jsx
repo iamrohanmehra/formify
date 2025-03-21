@@ -702,7 +702,7 @@ export default function FormX4() {
               {formData.frontendInterest === "yes" ? (
                 <>
                   <p className="text-[18px] leading-[28px] text-[#37404AB3]">
-                    For completing the onboarding! We're excited about your
+                    For completing the onboarding! We&apos;re excited about your
                     interest in the Frontend Intensive Program.
                   </p>
                   <p className="text-[18px] leading-[28px] text-[#37404AB3]">

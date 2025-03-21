@@ -74,8 +74,8 @@ export default function MigrationHelper() {
               PostgreSQL Benefits
             </h2>
             <p className="text-[16px] text-[#37404AB3] mb-2">
-              Since Supabase uses PostgreSQL, we're leveraging powerful features
-              like:
+              Since Supabase uses PostgreSQL, we&apos;re leveraging powerful
+              features like:
             </p>
             <ul className="list-disc list-inside text-[16px] text-[#37404AB3] space-y-1 ml-2">
               <li>
@@ -151,7 +151,7 @@ export default function MigrationHelper() {
                       onClick={() => setStep(2)}
                       className="bg-[#37404A] hover:bg-[#37404acc] text-white rounded-[6px]"
                     >
-                      I've Run the SQL Commands
+                      I&apos;ve Run the SQL Commands
                     </Button>
                   </div>
                 )}
@@ -178,7 +178,7 @@ export default function MigrationHelper() {
             {step === 2 && (
               <div className="ml-11">
                 <p className="text-[16px] text-[#37404AB3] mb-4">
-                  Now, let's migrate the existing data to use the new JSONB
+                  Now, let&apos;s migrate the existing data to use the new JSONB
                   structure.
                 </p>
 
@@ -261,7 +261,7 @@ export default function MigrationHelper() {
             {step === 3 && (
               <div className="ml-11">
                 <p className="text-[16px] text-[#37404AB3] mb-4">
-                  Migration completed! Now let's verify that everything is
+                  Migration completed! Now let&apos;s verify that everything is
                   working correctly.
                 </p>
 
@@ -291,7 +291,7 @@ export default function MigrationHelper() {
 
                 <div className="bg-green-50 p-4 rounded-lg mb-6">
                   <p className="text-green-600">
-                    Congratulations! You've successfully migrated to the
+                    Congratulations! You&apos;ve successfully migrated to the
                     enhanced single table approach with PostgreSQL JSONB.
                   </p>
                 </div>

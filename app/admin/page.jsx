@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -21,7 +20,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
@@ -33,7 +31,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Filter, Search, X } from "lucide-react";
+import { Loader2, Filter, Search } from "lucide-react";
 
 // List of authorized admin emails
 const AUTHORIZED_ADMINS = [
@@ -49,7 +47,7 @@ export default function AdminDashboard() {
   const [error, setError] = useState(null);
   const [selectedForm, setSelectedForm] = useState(null);
   const [showSubmissions, setShowSubmissions] = useState(false);
-  const [user, setUser] = useState(null);
+  const [_user, setUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
 
   // State for the confirmation modal
@@ -98,38 +96,71 @@ export default function AdminDashboard() {
     },
   });
 
-  useEffect(() => {
-    // Check authentication
-    const checkAuth = async () => {
+  // Define formatDate within useCallback to avoid re-creation on every render
+  const formatDate = useCallback((date) => {
+    if (!date) return null;
+    const d = new Date(date);
+    return d.toISOString().split("T")[0]; // YYYY-MM-DD format
+  }, []);
+
+  // Define fetchSubmissions with useCallback
+  const fetchSubmissions = useCallback(
+    async (formType, page = 1, newFilters = null, newSorting = null) => {
       try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
+        setLoading(true);
+        setError(null);
 
-        if (!session) {
-          router.push("/admin/login");
-          return;
+        // Use provided filters/sorting or current state
+        const currentFilters = newFilters || filters;
+        const currentSorting = newSorting || sorting;
+
+        // Build the query string with all parameters
+        const params = new URLSearchParams({
+          form_type: formType,
+          page: page.toString(),
+          pageSize: pagination.pageSize.toString(),
+          sortField: currentSorting.field,
+          sortOrder: currentSorting.order,
+        });
+
+        // Add optional filters
+        if (currentFilters.startDate) {
+          params.append("startDate", formatDate(currentFilters.startDate));
+        }
+        if (currentFilters.endDate) {
+          params.append("endDate", formatDate(currentFilters.endDate));
+        }
+        if (currentFilters.search) {
+          params.append("search", currentFilters.search);
         }
 
-        if (!AUTHORIZED_ADMINS.includes(session.user.email)) {
-          await supabase.auth.signOut();
-          router.push("/admin/login");
-          return;
+        const response = await fetch(
+          `/api/admin/submissions?${params.toString()}`
+        );
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to fetch submissions");
         }
 
-        setUser(session.user);
-        setAuthChecked(true);
-        fetchForms();
-      } catch (error) {
-        console.error("Auth check error:", error);
-        router.push("/admin/login");
+        if (!data.success) {
+          throw new Error(data.error || "Failed to fetch submissions");
+        }
+
+        setSubmissions(data.submissions || []);
+        setPagination(data.pagination);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching submissions:", err);
+        setError(err.message || "Failed to fetch submissions");
+        setLoading(false);
       }
-    };
+    },
+    [filters, sorting, pagination.pageSize, formatDate]
+  );
 
-    checkAuth();
-  }, [router, supabase]);
-
-  const fetchForms = async () => {
+  // Now define fetchForms with useCallback
+  const fetchForms = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -156,78 +187,55 @@ export default function AdminDashboard() {
         }
 
         setSelectedForm(data.forms[0]);
+        // Further fetch submissions for the first form
         fetchSubmissions(data.forms[0].form_type);
       } else {
+        console.log("No forms found");
         setForms([]);
-        setError(
-          "No form submissions found in the database. Please submit at least one form."
-        );
       }
-
-      setLoading(false);
-    } catch (err) {
-      console.error("Error fetching forms:", err);
-      setError(err.message || "Failed to fetch forms");
+    } catch (error) {
+      console.error("Error fetching forms:", error);
+      setError("Failed to load forms. Please try again later.");
+    } finally {
       setLoading(false);
     }
-  };
+  }, [fetchSubmissions]);
 
-  const fetchSubmissions = async (
-    formType,
-    page = 1,
-    newFilters = null,
-    newSorting = null
-  ) => {
-    try {
-      setLoading(true);
-      setError(null);
+  useEffect(() => {
+    // Check authentication
+    const checkAuth = async () => {
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
 
-      // Use provided filters/sorting or current state
-      const currentFilters = newFilters || filters;
-      const currentSorting = newSorting || sorting;
+        if (!session) {
+          router.push("/admin/login");
+          return;
+        }
 
-      // Build the query string with all parameters
-      const params = new URLSearchParams({
-        form_type: formType,
-        page: page.toString(),
-        pageSize: pagination.pageSize.toString(),
-        sortField: currentSorting.field,
-        sortOrder: currentSorting.order,
-      });
+        if (!AUTHORIZED_ADMINS.includes(session.user.email)) {
+          await supabase.auth.signOut();
+          router.push("/admin/login");
+          return;
+        }
 
-      // Add optional filters
-      if (currentFilters.startDate) {
-        params.append("startDate", formatDate(currentFilters.startDate));
+        setUser(session.user);
+        setAuthChecked(true);
+      } catch (error) {
+        console.error("Auth check error:", error);
+        router.push("/admin/login");
       }
-      if (currentFilters.endDate) {
-        params.append("endDate", formatDate(currentFilters.endDate));
-      }
-      if (currentFilters.search) {
-        params.append("search", currentFilters.search);
-      }
+    };
 
-      const response = await fetch(
-        `/api/admin/submissions?${params.toString()}`
-      );
-      const data = await response.json();
+    checkAuth();
+  }, [router, supabase]);
 
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to fetch submissions");
-      }
-
-      if (!data.success) {
-        throw new Error(data.error || "Failed to fetch submissions");
-      }
-
-      setSubmissions(data.submissions || []);
-      setPagination(data.pagination);
-      setLoading(false);
-    } catch (err) {
-      console.error("Error fetching submissions:", err);
-      setError(err.message || "Failed to fetch submissions");
-      setLoading(false);
+  useEffect(() => {
+    if (authChecked) {
+      fetchForms();
     }
-  };
+  }, [authChecked, fetchForms]);
 
   // Show confirmation modal before toggling form status
   const handleToggleClick = (formId, currentStatus) => {
@@ -409,37 +417,21 @@ export default function AdminDashboard() {
     });
   };
 
-  const handleSearchSubmit = (e) => {
-    // Prevent form submission default behavior if used within a form
-    if (e) e.preventDefault();
+  const handleSearchSubmit = () => {
+    setCurrentPage(1);
 
-    // Execute the search
-    fetchSubmissions(selectedForm.form_type, 1, {
-      ...filters,
-      search: filters.search,
-    });
+    if (!selectedForm) return;
+
+    fetchSubmissions(selectedForm.form_type, 1, currentFilters, currentSorting);
   };
 
+  // Fix the unused variable warning
   const handleSearchKeyDown = (e) => {
-    // Search when Enter key is pressed
+    // Only respond to Enter key presses
     if (e.key === "Enter") {
+      e.preventDefault();
       handleSearchSubmit();
     }
-  };
-
-  const formatDate = (date) => {
-    if (!date) return null;
-    // If it's a Date object, convert to ISO string and extract the date part
-    if (date instanceof Date) {
-      return date.toISOString().split("T")[0];
-    }
-    // If it's already in YYYY-MM-DD format, return as is
-    if (typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      return date;
-    }
-    // Otherwise, try to create a Date and convert
-    const d = new Date(date);
-    return d.toISOString().split("T")[0];
   };
 
   // Generate table headers based on form type
@@ -572,7 +564,8 @@ export default function AdminDashboard() {
     if (fieldType === "created_at") {
       try {
         return new Date(value).toLocaleString();
-      } catch (e) {
+      } catch {
+        // Use empty catch block since we don't need the error variable
         return value;
       }
     }
