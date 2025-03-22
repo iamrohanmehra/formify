@@ -87,6 +87,8 @@ export default function AdminDashboard() {
     fieldType: "",
   });
 
+  const [searchLoading, setSearchLoading] = useState(false);
+
   const router = useRouter();
   const supabase = createClientComponentClient({
     options: {
@@ -108,6 +110,9 @@ export default function AdminDashboard() {
     async (formType, page = 1, newFilters = null, newSorting = null) => {
       try {
         setLoading(true);
+        if (page === 1 && newFilters?.search) {
+          setSearchLoading(true);
+        }
         setError(null);
 
         // Use provided filters/sorting or current state
@@ -121,6 +126,7 @@ export default function AdminDashboard() {
           pageSize: pagination.pageSize.toString(),
           sortField: currentSorting.field,
           sortOrder: currentSorting.order,
+          _: new Date().getTime().toString(), // Cache-busting timestamp
         });
 
         // Add optional filters
@@ -135,7 +141,15 @@ export default function AdminDashboard() {
         }
 
         const response = await fetch(
-          `/api/admin/submissions?${params.toString()}`
+          `/api/admin/submissions?${params.toString()}`,
+          {
+            cache: "no-store",
+            headers: {
+              "Cache-Control": "no-cache, no-store, must-revalidate",
+              Pragma: "no-cache",
+              Expires: "0",
+            },
+          }
         );
         const data = await response.json();
 
@@ -150,13 +164,16 @@ export default function AdminDashboard() {
         setSubmissions(data.submissions || []);
         setPagination(data.pagination);
         setLoading(false);
+        setSearchLoading(false);
       } catch (err) {
         console.error("Error fetching submissions:", err);
         setError(err.message || "Failed to fetch submissions");
         setLoading(false);
+        setSearchLoading(false);
       }
     },
-    [filters, sorting, pagination.pageSize, formatDate]
+    // Remove "filters" from dependency array to prevent re-fetching when typing in search
+    [pagination.pageSize, sorting, formatDate]
   );
 
   // Now define fetchForms with useCallback
@@ -165,7 +182,15 @@ export default function AdminDashboard() {
       setLoading(true);
 
       console.log("Fetching forms from API...");
-      const response = await fetch("/api/admin/forms");
+      const timestamp = new Date().getTime();
+      const response = await fetch(`/api/admin/forms?_=${timestamp}`, {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      });
       const data = await response.json();
 
       if (!response.ok) {
@@ -277,15 +302,22 @@ export default function AdminDashboard() {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("/api/admin/delete-submission", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          submissionId,
-        }),
-      });
+      const timestamp = new Date().getTime();
+      const response = await fetch(
+        `/api/admin/delete-submission?_=${timestamp}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
+          body: JSON.stringify({
+            submissionId,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -322,16 +354,23 @@ export default function AdminDashboard() {
         forms.map((f) => (f.id === formId ? { ...f, is_active: newStatus } : f))
       );
 
-      const response = await fetch("/api/admin/toggle-form-status", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          form_type: form.form_type,
-          is_active: newStatus,
-        }),
-      });
+      const timestamp = new Date().getTime();
+      const response = await fetch(
+        `/api/admin/toggle-form-status?_=${timestamp}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
+          body: JSON.stringify({
+            form_type: form.form_type,
+            is_active: newStatus,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -411,21 +450,28 @@ export default function AdminDashboard() {
 
   const handleSearchChange = (e) => {
     const searchValue = e.target.value;
+    // Only update the state, never trigger search here
     setFilters({
       ...filters,
       search: searchValue,
     });
+    // No search is triggered here - only updating the state
   };
 
   const handleSearchSubmit = () => {
-    setCurrentPage(1);
+    if (!selectedForm || !filters.search.trim()) return;
 
-    if (!selectedForm) return;
+    // Reset pagination to page 1 when searching
+    setPagination({
+      ...pagination,
+      page: 1,
+    });
 
-    fetchSubmissions(selectedForm.form_type, 1, currentFilters, currentSorting);
+    // Use page 1 and the current filters/sorting from state
+    fetchSubmissions(selectedForm.form_type, 1, filters, sorting);
   };
 
-  // Fix the unused variable warning
+  // Only handle search on Enter key press
   const handleSearchKeyDown = (e) => {
     // Only respond to Enter key presses
     if (e.key === "Enter") {
@@ -439,7 +485,7 @@ export default function AdminDashboard() {
     // Common headers for all forms
     const commonHeaders = [
       { key: "created_at", label: "Date" },
-      { key: "email", label: "Email" },
+      { key: "email_address", label: "Email" },
     ];
 
     // Form-specific headers
@@ -447,8 +493,8 @@ export default function AdminDashboard() {
 
     if (formType === "formx1" || formType === "formx4") {
       formSpecificHeaders = [
-        { key: "first_name", label: "Name" },
-        { key: "whatsapp", label: "WhatsApp" },
+        { key: "full_name", label: "Name" },
+        { key: "whatsapp_number", label: "WhatsApp" },
         { key: "preference", label: "Preference" },
         { key: "occupation", label: "Occupation" },
       ];
@@ -468,7 +514,7 @@ export default function AdminDashboard() {
       formSpecificHeaders = [
         // Use dedicated columns for campus ambassador form
         { key: "full_name", label: "Full Name" },
-        { key: "whatsapp", label: "WhatsApp" },
+        { key: "whatsapp_number", label: "WhatsApp" },
         { key: "form_data.college", label: "College" },
         { key: "form_data.year_of_study", label: "Year of Study" },
         { key: "form_data.motivation", label: "Motivation" },
@@ -495,13 +541,24 @@ export default function AdminDashboard() {
         return formatFieldValue(fullName, keyPath);
       }
 
-      // For whatsapp, use dedicated column if available
-      if (keyPath === "whatsapp") {
+      // For whatsapp_number, use dedicated column if available
+      if (keyPath === "whatsapp_number") {
         const whatsapp =
-          submission.whatsapp ||
+          submission.whatsapp_number ||
+          (submission.form_data && submission.form_data.whatsapp_number) ||
           (submission.form_data && submission.form_data.whatsapp) ||
           "";
         return formatFieldValue(whatsapp, keyPath);
+      }
+
+      // For email_address, use email_address column
+      if (keyPath === "email_address") {
+        const email =
+          submission.email_address ||
+          (submission.form_data && submission.form_data.email_address) ||
+          (submission.form_data && submission.form_data.email) ||
+          "";
+        return formatFieldValue(email, keyPath);
       }
 
       return formatFieldValue(submission[keyPath], keyPath);
@@ -844,21 +901,72 @@ export default function AdminDashboard() {
 
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-3 sm:gap-4">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
-                    <div className="relative w-full sm:w-64">
-                      <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
-                      <Input
-                        placeholder="Search submissions..."
-                        value={filters.search}
-                        onChange={handleSearchChange}
-                        onKeyDown={handleSearchKeyDown}
-                        className="pl-8 border-gray-300 text-sm w-full"
-                      />
+                    <div className="relative w-full sm:w-auto flex flex-grow items-center">
+                      <div className="relative flex-grow">
+                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
+                        <Input
+                          placeholder="Search submissions..."
+                          value={filters.search}
+                          onChange={handleSearchChange}
+                          onKeyDown={handleSearchKeyDown}
+                          className="pl-8 border-gray-300 text-sm w-full"
+                          aria-label="Search submissions"
+                          autoComplete="off"
+                        />
+                        {filters.search && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setFilters({
+                                ...filters,
+                                search: "",
+                              });
+                              // Don't auto-search when clearing
+                            }}
+                            className="absolute right-2 top-2.5 text-gray-400 hover:text-gray-600"
+                            aria-label="Clear search"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <line x1="18" y1="6" x2="6" y2="18"></line>
+                              <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+                      <Button
+                        variant="default"
+                        size="sm"
+                        onClick={handleSearchSubmit}
+                        className="ml-2 text-xs sm:text-sm cursor-pointer whitespace-nowrap h-8 sm:h-9"
+                        aria-label="Search"
+                        disabled={
+                          searchLoading || loading || !filters.search.trim()
+                        }
+                      >
+                        {searchLoading ? (
+                          <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" />
+                        ) : (
+                          <Search className="h-3.5 w-3.5 mr-1 sm:hidden" />
+                        )}
+                        <span>{searchLoading ? "Searching..." : "Search"}</span>
+                      </Button>
                     </div>
 
                     <Button
                       variant="outline"
                       onClick={() => setFilterDialogOpen(true)}
                       className="flex items-center gap-2 border-gray-300 text-xs sm:text-sm cursor-pointer"
+                      disabled={loading}
                     >
                       <Filter className="h-4 w-4" />
                       <span>Filter</span>

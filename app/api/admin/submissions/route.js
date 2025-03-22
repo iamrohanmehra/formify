@@ -61,11 +61,11 @@ export async function GET(request) {
       // For campus-ambassador form type, search in different fields
       if (formType === "campus-ambassador") {
         query = query.or(
-          `email.ilike.%${searchTerm}%,full_name.ilike.%${searchTerm}%,whatsapp.ilike.%${searchTerm}%,form_data->>'college'.ilike.%${searchTerm}%`
+          `email_address.ilike.%${searchTerm}%,full_name.ilike.%${searchTerm}%,whatsapp_number.ilike.%${searchTerm}%,form_data->>'college'.ilike.%${searchTerm}%`
         );
       } else {
         query = query.or(
-          `first_name.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,whatsapp.ilike.%${searchTerm}%`
+          `full_name.ilike.%${searchTerm}%,email_address.ilike.%${searchTerm}%,whatsapp_number.ilike.%${searchTerm}%`
         );
       }
     }
@@ -112,13 +112,20 @@ export async function GET(request) {
           processedSubmission.form_data
         ) {
           // Use the dedicated columns if available, otherwise fall back to form_data
-          processedSubmission.first_name =
+          processedSubmission.full_name =
             submission.full_name ||
             processedSubmission.form_data.full_name ||
             "";
 
-          processedSubmission.whatsapp =
-            submission.whatsapp || processedSubmission.form_data.whatsapp || "";
+          processedSubmission.whatsapp_number =
+            submission.whatsapp_number ||
+            processedSubmission.form_data.whatsapp_number ||
+            "";
+
+          processedSubmission.email_address =
+            submission.email_address ||
+            processedSubmission.form_data.email_address ||
+            "";
 
           // Add other fields that might be needed in the admin UI
         }
@@ -143,26 +150,36 @@ export async function GET(request) {
         return processedSubmission;
       }) || [];
 
-    return NextResponse.json({
-      success: true,
-      submissions: processedData,
-      pagination: {
-        total: count || 0,
-        page,
-        pageSize,
-        totalPages: Math.ceil((count || 0) / pageSize),
+    return NextResponse.json(
+      {
+        success: true,
+        submissions: processedData,
+        pagination: {
+          total: count || 0,
+          page,
+          pageSize,
+          totalPages: Math.ceil((count || 0) / pageSize),
+        },
+        filters: {
+          formType,
+          startDate,
+          endDate,
+          searchTerm,
+        },
+        sorting: {
+          field: sortField,
+          order: sortOrder,
+        },
       },
-      filters: {
-        formType,
-        startDate,
-        endDate,
-        searchTerm,
-      },
-      sorting: {
-        field: sortField,
-        order: sortOrder,
-      },
-    });
+      {
+        headers: {
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+    );
   } catch (error) {
     console.error("Error fetching submissions:", error);
     return NextResponse.json(
@@ -170,7 +187,15 @@ export async function GET(request) {
         success: false,
         error: error.message || "Failed to fetch submissions",
       },
-      { status: 500 }
+      {
+        status: 500,
+        headers: {
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
     );
   }
 }

@@ -10,7 +10,15 @@ export async function GET() {
     if (!supabaseUrl || !supabaseServiceKey) {
       return NextResponse.json(
         { success: false, error: "Missing Supabase credentials" },
-        { status: 500 }
+        {
+          status: 500,
+          headers: {
+            "Cache-Control":
+              "no-store, no-cache, must-revalidate, proxy-revalidate",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
+        }
       );
     }
 
@@ -27,7 +35,15 @@ export async function GET() {
       console.error("Error fetching submissions:", submissionsError);
       return NextResponse.json(
         { success: false, error: submissionsError.message },
-        { status: 500 }
+        {
+          status: 500,
+          headers: {
+            "Cache-Control":
+              "no-store, no-cache, must-revalidate, proxy-revalidate",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
+        }
       );
     }
 
@@ -89,19 +105,39 @@ export async function GET() {
 
       console.log("Derived forms:", derivedForms);
 
-      return NextResponse.json({
-        success: true,
-        forms: derivedForms,
-        submissionCounts,
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          forms: derivedForms,
+          submissionCounts,
+        },
+        {
+          headers: {
+            "Cache-Control":
+              "no-store, no-cache, must-revalidate, proxy-revalidate",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
+        }
+      );
     } else {
       // No submissions found
       console.log("No submissions found");
-      return NextResponse.json({
-        success: false,
-        error: "No form submissions found in the database",
-        forms: [],
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          error: "No form submissions found in the database",
+          forms: [],
+        },
+        {
+          headers: {
+            "Cache-Control":
+              "no-store, no-cache, must-revalidate, proxy-revalidate",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
+        }
+      );
     }
   } catch (error) {
     console.error("Error fetching forms:", error);
@@ -110,7 +146,15 @@ export async function GET() {
         success: false,
         error: error.message || "Failed to fetch forms",
       },
-      { status: 500 }
+      {
+        status: 500,
+        headers: {
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
     );
   }
 }
