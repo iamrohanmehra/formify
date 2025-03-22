@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import CampusAmbassadorBanner from "./components/CampusAmbassadorBanner";
 
 export default function Home() {
   return (
@@ -37,7 +38,7 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <div className="flex-1 flex items-center justify-center p-6">
+      <div className="flex-1 flex flex-col items-center justify-center p-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -72,6 +73,9 @@ export default function Home() {
             </div>
           </div>
         </motion.div>
+
+        {/* Campus Ambassador Banner */}
+        <CampusAmbassadorBanner />
       </div>
 
       {/* Footer */}
