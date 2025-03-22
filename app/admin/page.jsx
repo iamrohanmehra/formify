@@ -32,7 +32,6 @@ import {
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Filter, Search } from "lucide-react";
-import { Metadata } from "next";
 
 // List of authorized admin emails
 const AUTHORIZED_ADMINS = [
@@ -89,6 +88,9 @@ export default function AdminDashboard() {
   });
 
   const [searchLoading, setSearchLoading] = useState(false);
+
+  // Add a separate searchTerm state that we'll use in the dependency array
+  const [searchTerm, setSearchTerm] = useState("");
 
   const router = useRouter();
   const supabase = createClientComponentClient({
@@ -173,8 +175,10 @@ export default function AdminDashboard() {
         setSearchLoading(false);
       }
     },
-    // Remove "filters" from dependency array to prevent re-fetching when typing in search
-    [pagination.pageSize, sorting, formatDate]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [pagination.pageSize, sorting, formatDate, searchTerm]
+    // We intentionally exclude 'filters' from the dependency array to prevent
+    // unnecessary searches while typing in the search input
   );
 
   // Now define fetchForms with useCallback
@@ -461,6 +465,9 @@ export default function AdminDashboard() {
 
   const handleSearchSubmit = () => {
     if (!selectedForm || !filters.search.trim()) return;
+
+    // Update the searchTerm to match filters.search when actually searching
+    setSearchTerm(filters.search);
 
     // Reset pagination to page 1 when searching
     setPagination({
