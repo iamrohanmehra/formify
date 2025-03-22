@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Filter, Search } from "lucide-react";
+import { Metadata } from "next";
 
 // List of authorized admin emails
 const AUTHORIZED_ADMINS = [

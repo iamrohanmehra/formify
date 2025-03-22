@@ -33,6 +33,13 @@ export default function Home() {
             </svg>
             Codekaro Formify
           </Link>
+
+          <Link
+            href="/admin/login"
+            className="text-[#37404A] hover:text-[#37404A]/80 text-sm"
+          >
+            Admin Login
+          </Link>
         </div>
       </header>
 
@@ -56,17 +63,37 @@ export default function Home() {
 
             <div className="p-6">
               <div className="flex flex-col items-center">
-                <div className="text-center">
-                  <h2 className="text-xl font-medium text-[#37404A] mb-3">
+                <div className="text-center mb-6">
+                  <h2 className="text-xl font-medium text-[#37404A] mb-2">
                     Welcome to Codekaro Formify
                   </h2>
-                  <p className="text-[#37404AB3] text-base mb-2">
-                    A powerful online form building platform
-                  </p>
-                  <p className="text-[#37404AB3] text-sm">
+                  <p className="text-[#37404AB3] text-base">
                     If you have a specific form URL, you can navigate directly
                     to it to fill and submit the form.
                   </p>
+                </div>
+
+                <div className="space-y-3 w-full">
+                  <Link
+                    href="/formx1"
+                    className="w-full py-3 px-4 bg-[#37404A] hover:bg-[#37404A]/90 text-white rounded flex items-center justify-center transition-colors"
+                  >
+                    <span>FormX1 Demo</span>
+                  </Link>
+
+                  <Link
+                    href="/formx4"
+                    className="w-full py-3 px-4 bg-[#37404A]/80 hover:bg-[#37404A] text-white rounded flex items-center justify-center transition-colors"
+                  >
+                    <span>FormX4 Demo</span>
+                  </Link>
+
+                  <Link
+                    href="/campus-ambassador"
+                    className="w-full py-3 px-4 border border-[#37404A] text-[#37404A] hover:bg-gray-50 rounded flex items-center justify-center transition-colors"
+                  >
+                    <span>Campus Ambassador Application</span>
+                  </Link>
                 </div>
               </div>
             </div>

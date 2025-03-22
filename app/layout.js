@@ -12,8 +12,21 @@ const karla = Karla({
 });
 
 export const metadata = {
-  title: "CK FormX",
-  description: "Form application for CodeKaro",
+  title: "Codekaro Formify - Online Form Building Platform",
+  description:
+    "Create, manage, and share online forms easily with Codekaro Formify. A powerful form builder for all your data collection needs.",
+  openGraph: {
+    title: "Codekaro Formify - Online Form Building Platform",
+    description:
+      "Create, manage, and share online forms easily with Codekaro Formify. A powerful form builder for all your data collection needs.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Codekaro Formify - Online Form Building Platform",
+    description:
+      "Create, manage, and share online forms easily with Codekaro Formify. A powerful form builder for all your data collection needs.",
+  },
 };
 
 export default async function RootLayout({ children }) {
