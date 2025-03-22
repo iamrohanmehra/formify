@@ -1,11 +1,13 @@
 export default function generateStructuredData() {
+  const baseUrl = "https://forms.javascript.design";
+
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "Campus Ambassador Program | Codekaro Formify",
     description:
       "Apply to become a Codekaro Campus Ambassador and represent us at your college or university.",
-    url: "https://formify.codekaro.in/campus-ambassador",
+    url: `${baseUrl}/campus-ambassador`,
     mainEntity: {
       "@type": "EducationalOccupationalProgram",
       name: "Codekaro Campus Ambassador Program",
@@ -29,7 +31,7 @@ export default function generateStructuredData() {
       "@type": "ApplyAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: "https://formify.codekaro.in/campus-ambassador",
+        urlTemplate: `${baseUrl}/campus-ambassador`,
       },
       object: {
         "@type": "EducationalOccupationalProgram",

@@ -12,7 +12,7 @@ const karla = Karla({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://forms.javascript.design/campus-ambassador"),
+  metadataBase: new URL("https://forms.javascript.design"),
   title: "Codekaro Formify - Online Form Building Platform",
   description:
     "Create, manage, and share online forms easily with Codekaro Formify. A powerful form builder for all your data collection needs.",

@@ -12,20 +12,20 @@ export const metadata = {
     "college representatives",
     "campus program",
   ],
-  canonical: "https://forms.javascript.design/campus-ambassador",
+  canonical: "/campus-ambassador",
 
   // Open Graph metadata (Facebook, WhatsApp, LinkedIn, etc.)
   openGraph: {
     title: "Become a Codekaro Campus Ambassador",
     description:
       "Join our team of campus ambassadors and help spread the word about Codekaro at your institution. Great opportunity for students to develop leadership skills and earn rewards.",
-    url: "https://forms.javascript.design/campus-ambassador",
+    url: "/campus-ambassador",
     type: "website",
     siteName: "Codekaro Formify",
     locale: "en_US",
     images: [
       {
-        url: "/campus-ambassador.png",
+        url: "https://forms.javascript.design/campus-ambassador.png",
         width: 1200,
         height: 630,
         alt: "Codekaro Campus Ambassador Program",
@@ -39,7 +39,7 @@ export const metadata = {
     title: "Become a Codekaro Campus Ambassador",
     description:
       "Join our team of campus ambassadors and help spread the word about Codekaro at your institution. Great opportunity for students to develop leadership skills and earn rewards.",
-    images: ["/campus-ambassador.png"],
+    images: ["https://forms.javascript.design/campus-ambassador.png"],
     creator: "@codekaro",
     site: "@codekaro",
   },
@@ -50,8 +50,6 @@ export const metadata = {
     "og:image:height": "630",
     "og:image:alt": "Codekaro Campus Ambassador Program",
     "og:image:type": "image/png",
-    "twitter:domain": "formify.codekaro.in",
-    "twitter:url": "https://forms.javascript.design/campus-ambassador",
   },
 };
 
