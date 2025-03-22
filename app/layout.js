@@ -27,6 +27,11 @@ export const metadata = {
     description:
       "Create, manage, and share online forms easily with Codekaro Formify. A powerful form builder for all your data collection needs.",
   },
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
 };
 
 export default async function RootLayout({ children }) {
