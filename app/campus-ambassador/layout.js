@@ -2,6 +2,7 @@ import generateStructuredData from "./structured-data";
 import Script from "next/script";
 
 export const metadata = {
+  metadataBase: new URL("https://forms.codekaro.in"),
   title: "Campus Ambassador Program | Codekaro Formify",
   description:
     "Apply to become a Codekaro Campus Ambassador and represent us at your college or university. Join our team of passionate ambassadors to promote Codekaro events, workshops, and courses on your campus.",
@@ -25,7 +26,7 @@ export const metadata = {
     locale: "en_US",
     images: [
       {
-        url: "https://forms.javascript.design/campus-ambassador.png",
+        url: "https://forms.codekaro.in/campus-ambassador.png",
         width: 1200,
         height: 630,
         alt: "Codekaro Campus Ambassador Program",
@@ -39,7 +40,7 @@ export const metadata = {
     title: "Become a Codekaro Campus Ambassador",
     description:
       "Join our team of campus ambassadors and help spread the word about Codekaro at your institution. Great opportunity for students to develop leadership skills and earn rewards.",
-    images: ["https://forms.javascript.design/campus-ambassador.png"],
+    images: ["https://forms.codekaro.in/campus-ambassador.png"],
     creator: "@codekaro",
     site: "@codekaro",
   },

@@ -1,4 +1,5 @@
 export const metadata = {
+  metadataBase: new URL("https://forms.codekaro.in"),
   title: "General Registration Form | Codekaro Formify",
   description:
     "Register for Codekaro courses and events with our easy-to-use online form.",

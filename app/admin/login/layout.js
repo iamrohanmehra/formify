@@ -1,4 +1,5 @@
 export const metadata = {
+  metadataBase: new URL("https://forms.codekaro.in"),
   title: "Admin Login | Codekaro Formify",
   description: "Secure login portal for Codekaro Formify administrators.",
   robots: {
