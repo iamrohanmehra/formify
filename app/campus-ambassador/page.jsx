@@ -132,7 +132,11 @@ export default function CampusAmbassadorForm() {
             type="tel"
             placeholder="Your answer goes here..."
             value={formData.whatsapp}
-            onChange={(e) => handleChange("whatsapp", e.target.value)}
+            onChange={(e) => {
+              // Only allow numbers
+              const value = e.target.value.replace(/[^0-9]/g, "");
+              handleChange("whatsapp", value);
+            }}
             className={cn(
               "border-0 border-b-2 rounded-none px-0 py-0 pb-[8px] text-[24px] leading-[32px] w-full focus-visible:ring-0 focus-visible:border-[#37404A] transition-colors placeholder:text-[#37404A80]",
               "!pl-0 !pr-0 !m-0",
