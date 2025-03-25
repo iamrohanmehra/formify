@@ -12,7 +12,7 @@ import { submitForm } from "@/app/actions";
 import { ChevronRight, ChevronUp, ChevronDown } from "lucide-react";
 import FormInactive from "../components/FormInactive";
 
-export default function FormX4() {
+export default function DemoForm() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
@@ -41,7 +41,7 @@ export default function FormX4() {
     const checkFormStatus = async () => {
       try {
         setCheckingStatus(true);
-        const response = await fetch("/api/form-status?form_type=formx4");
+        const response = await fetch("/api/form-status?form_type=demo-form");
         const data = await response.json();
 
         if (response.ok && data.success) {
@@ -586,7 +586,7 @@ export default function FormX4() {
             recommendation: formData.recommendation || null,
             income: formData.income || null,
             frontendInterest: formData.frontendInterest || null,
-            form_type: "formx4",
+            form_type: "demo-form",
           });
 
           console.log("Form submission result:", result);
@@ -665,7 +665,7 @@ export default function FormX4() {
 
   // If the form is inactive, show the inactive message
   if (!formActive && !checkingStatus) {
-    return <FormInactive formTitle="FormX4" />;
+    return <FormInactive formTitle="Demo Form" />;
   }
 
   // If checking status, show loading

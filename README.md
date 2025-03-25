@@ -1,218 +1,212 @@
-# Formify
+# Codekaro Forms
 
-A comprehensive form management system built with Next.js and Supabase, designed for creating, submitting, and administering multiple form types with robust data handling capabilities.
+A powerful and flexible form management system built with Next.js and Supabase, designed to handle various types of form submissions with ease.
 
 ## Features
 
-### Form Submission
+- **Multiple Form Types Support**
 
-- **Multiple Form Types**: Support for different form types (formx1, formx4, campus-ambassador) with unique fields for each
-- **Flexible Data Structure**: JSONB storage for form-specific fields allowing easy extension
-- **Dual Storage**: Submissions saved to both Supabase database and Google Sheets
-- **Fallback Mechanism**: Queue system for Google Sheets failures to ensure data is never lost
-- **Form Status Control**: Forms can be toggled active/inactive by administrators
+  - FormX1: General registration form
+  - FormX4: Advanced registration form with conditional questions
+  - Campus Ambassador Application form
+  - Extensible architecture for adding new form types
 
-### Admin Dashboard
+- **Admin Dashboard**
 
-- **Authentication**: Google OAuth integration with role-based access control
-- **Form Management**: Toggle forms active/inactive status
-- **Submission Viewing**: View, filter, and sort form submissions
-- **Statistics**: Real-time analytics on form submissions
-- **Optimized Performance**: Materialized views for efficient statistics
+  - Secure admin login with Google authentication
+  - View and manage form submissions
+  - Toggle form status (active/inactive)
+  - Search and filter submissions
+  - Pagination support
+  - Delete submissions
+  - Export data functionality
 
-### Security
+- **Form Management**
 
-- **Role-Based Access**: Only authorized admin emails can access the admin dashboard
-- **Secure Authentication**: Using Supabase Auth with JWT
-- **Environment Variable Protection**: Sensitive credentials protected from client exposure
+  - Form status control (active/inactive)
+  - Real-time form validation
+  - Conditional questions
+  - Customizable form fields
+  - Responsive design
 
-### User Experience
+- **Data Storage**
+  - PostgreSQL database with Supabase
+  - JSONB storage for flexible form data
+  - Efficient indexing for better performance
+  - Data migration support
 
-- **Responsive Design**: Mobile-friendly interface for all pages
-- **Form Validation**: Client-side validation for form submissions
-- **Loading States**: Visual feedback during asynchronous operations
-- **Error Handling**: Comprehensive error handling with user-friendly messages
+## Installation
 
-## API Endpoints
-
-### Public Endpoints
-
-#### Form Status
-
-- **GET /api/form-status**
-  - Query Params: `form_type` (required)
-  - Description: Check if a specific form is currently active
-  - Response: `{success: boolean, is_active: boolean}`
-
-#### Submit Form
-
-- **POST /api/submit-form**
-  - Body: Form submission data
-  - Description: Submit form data to Google Sheets
-  - Response: `{success: boolean, error?: string}`
-
-#### Form Submission Queue
-
-- **POST /api/queue-form-submission**
-  - Body: Form submission data
-  - Description: Queue a form submission for later processing
-  - Response: `{success: boolean, error?: string}`
-
-### Admin Endpoints
-
-#### Forms List
-
-- **GET /api/admin/forms**
-  - Description: Get all available form types and their status
-  - Response: `{success: boolean, forms: Array, submissionCounts: Object}`
-
-#### Form Submissions
-
-- **GET /api/admin/submissions**
-  - Query Params: `form_type` (required), `page`, `pageSize`, etc.
-  - Description: Get paginated form submissions for a specific form type
-  - Response: `{success: boolean, submissions: Array, pagination: Object}`
-
-#### Toggle Form Status
-
-- **POST /api/admin/toggle-form-status**
-  - Body: `{form_type: string, active: boolean}`
-  - Description: Toggle whether a form is accepting submissions
-  - Response: `{success: boolean, error?: string}`
-
-#### Auth Callback
-
-- **GET /api/auth/callback**
-  - Description: OAuth callback handler for authentication
-  - Response: Redirects to admin dashboard or login page
-
-### System Endpoints
-
-#### Process Queued Submissions
-
-- **POST /api/process-queued-submissions**
-  - Description: Process any queued form submissions (for cron jobs)
-  - Response: `{success: boolean, processed: number, errors: Array}`
-
-## Environment Variables
-
-The project requires several environment variables to function properly:
-
-### Supabase Configuration
-
-```
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-```
-
-### Google Sheets API Configuration
-
-```
-GOOGLE_SERVICE_ACCOUNT_EMAIL=your_google_service_account_email
-GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nyour_private_key_content\n-----END PRIVATE KEY-----\n"
-GOOGLE_SHEET_ID=your_google_sheet_id
-```
-
-### Application Configuration
-
-```
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
-NEXT_PUBLIC_SITE_URL=https://your-production-url.com
-NODE_ENV=development|production
-```
-
-## Getting Started
-
-1. **Clone the repository**
+1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/formify.git
-   cd formify
+   git clone https://github.com/yourusername/codekaro-forms.git
+   cd codekaro-forms
    ```
 
-2. **Install dependencies**
+2. Install dependencies:
 
    ```bash
    npm install
-   # or
-   yarn install
-   # or
-   bun install
    ```
 
-3. **Set up environment variables**
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory with the following variables:
 
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
    ```
 
-4. **Run the development server**
+4. Set up the database:
 
+   - Create a new project in Supabase
+   - Run the database migration commands in the Supabase SQL editor:
+
+   ```sql
+   -- Add form_data column if it doesn't exist
+   ALTER TABLE form_submissions ADD COLUMN IF NOT EXISTS form_data JSONB DEFAULT '{}'::jsonb;
+
+   -- Create indexes for better performance
+   CREATE INDEX IF NOT EXISTS idx_form_submissions_form_type ON form_submissions (form_type);
+   CREATE INDEX IF NOT EXISTS idx_form_submissions_created_at ON form_submissions (created_at);
+   CREATE INDEX IF NOT EXISTS idx_form_submissions_form_data ON form_submissions USING GIN (form_data);
+
+   -- Create form_status table
+   CREATE TABLE IF NOT EXISTS public.form_status (
+     id SERIAL PRIMARY KEY,
+     form_type TEXT NOT NULL UNIQUE,
+     is_active BOOLEAN NOT NULL DEFAULT true,
+     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+   );
+   ```
+
+5. Run the development server:
    ```bash
    npm run dev
-   # or
-   yarn dev
-   # or
-   bun dev
    ```
-
-5. **Open [http://localhost:3000](http://localhost:3000) with your browser**
-
-## Database Setup
-
-See the [DATABASE-SETUP.md](DATABASE-SETUP.md) file for instructions on setting up the Supabase database schema.
-
-## Deployment
-
-This project is configured for deployment on Vercel:
-
-1. **Connect your repository to Vercel**
-2. **Configure environment variables in the Vercel dashboard**
-3. **Deploy!**
-
-## Authentication
-
-The admin dashboard is protected with Supabase Auth and Google OAuth. Only authorized email addresses can access the admin dashboard.
-
-To add or modify authorized admin emails:
-
-1. Update the `AUTHORIZED_ADMINS` array in these files:
-   - `app/admin/login/page.jsx`
-   - `app/admin/page.jsx`
-   - `app/api/auth/callback/route.js`
-   - `middleware.js`
 
 ## Form Types
 
-### Formx1 (`/formx1`)
+### FormX1 (General Registration Form)
 
-Basic form with essential fields including:
+- Basic registration form for general use cases
+- Fields:
+  - Full Name
+  - Email Address
+  - WhatsApp Number
+  - Preference (Contact Method)
+  - Occupation
+  - Recommendation
 
-- Name
-- Email
-- WhatsApp
-- Preference
-- Occupation
-- Additional fields based on occupation
+### FormX4 (Advanced Registration Form)
 
-### Formx4 (`/formx4`)
+- Comprehensive registration form with additional fields
+- Fields:
+  - Full Name
+  - Email Address
+  - WhatsApp Number
+  - Preference (Contact Method)
+  - Occupation
+  - Frontend Interest
+  - Income Range
 
-Extended form with additional fields for more detailed information.
+### Campus Ambassador Form
 
-### Campus Ambassador (`/campus-ambassador`)
+- Specialized form for campus ambassador applications
+- Fields:
+  - Full Name
+  - Email Address
+  - WhatsApp Number
+  - College
+  - Year of Study
+  - Motivation
+  - Strategy
 
-Specialized form for campus ambassador applications including:
+## Database Schema
 
-- Full Name
-- Email
-- WhatsApp
-- College
-- Year of Study
-- Motivation
-- Strategy
+### form_submissions Table
+
+```sql
+CREATE TABLE form_submissions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  form_type TEXT NOT NULL,
+  email_address TEXT NOT NULL,
+  full_name TEXT,
+  whatsapp_number TEXT,
+  form_data JSONB DEFAULT '{}'::jsonb,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+### form_status Table
+
+```sql
+CREATE TABLE form_status (
+  id SERIAL PRIMARY KEY,
+  form_type TEXT NOT NULL UNIQUE,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+## API Endpoints
+
+### Form Submission
+
+- `POST /api/form-submissions`
+  - Submit a new form
+  - Handles different form types
+  - Validates form data
+  - Stores in Supabase
+
+### Admin API
+
+- `GET /api/admin/forms`
+  - List all available forms
+  - Get submission counts
+- `GET /api/admin/submissions`
+  - Get form submissions with pagination
+  - Support for filtering and sorting
+- `POST /api/admin/toggle-form-status`
+  - Toggle form active status
+- `POST /api/admin/delete-submission`
+  - Delete a submission
+
+## Development
+
+### Adding a New Form Type
+
+1. Create a new form component in the `app` directory
+2. Add form type to the `form_status` table
+3. Update the `submitForm` function in `app/actions.js`
+4. Add form-specific fields to the admin dashboard
+
+### Database Migrations
+
+Run the migration API to update the database schema:
+
+```
+GET /api/db-migration
+```
+
+Then migrate existing data:
+
+```
+GET /api/migrate-form-data
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
-See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
