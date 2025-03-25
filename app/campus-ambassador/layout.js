@@ -3,9 +3,9 @@ import Script from "next/script";
 
 export const metadata = {
   metadataBase: new URL("https://forms.codekaro.in"),
-  title: "Campus Ambassador Program | Codekaro Formify",
+  title: "Campus Ambassador Program | Codekaro Forms",
   description:
-    "Apply to become a Codekaro Campus Ambassador and represent us at your college or university. Join our team of passionate ambassadors to promote Codekaro events, workshops, and courses on your campus.",
+    "Join Codekaro's Campus Ambassador Program and help us grow our community of developers.",
   keywords: [
     "campus ambassador",
     "student ambassador",
@@ -14,22 +14,26 @@ export const metadata = {
     "campus program",
   ],
   canonical: "/campus-ambassador",
+  robots: {
+    index: false,
+    follow: false,
+  },
 
   // Open Graph metadata (Facebook, WhatsApp, LinkedIn, etc.)
   openGraph: {
-    title: "Become a Codekaro Campus Ambassador",
+    title: "Campus Ambassador Program | Codekaro Forms",
     description:
-      "Join our team of campus ambassadors and help spread the word about Codekaro at your institution. Great opportunity for students to develop leadership skills and earn rewards.",
+      "Join Codekaro's Campus Ambassador Program and help us grow our community of developers.",
     url: "/campus-ambassador",
     type: "website",
-    siteName: "Codekaro Formify",
+    siteName: "Codekaro Forms",
     locale: "en_US",
     images: [
       {
         url: "https://forms.codekaro.in/campus-ambassador.png",
         width: 1200,
         height: 630,
-        alt: "Codekaro Campus Ambassador Program",
+        alt: "Campus Ambassador Program",
       },
     ],
   },

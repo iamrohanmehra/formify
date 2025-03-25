@@ -130,7 +130,7 @@ export default function AdminLogin() {
               <line x1="16" y1="17" x2="8" y2="17"></line>
               <polyline points="10 9 9 9 8 9"></polyline>
             </svg>
-            Codekaro Formify
+            Codekaro Forms
           </Link>
         </div>
       </header>
@@ -285,8 +285,8 @@ export default function AdminLogin() {
       <footer className="bg-white border-t border-gray-200 py-4 mt-auto">
         <div className="max-w-7xl mx-auto px-6">
           <p className="text-sm text-gray-500 text-center">
-            © {new Date().getFullYear()} Codekaro Formify Admin Panel. All
-            rights reserved.
+            © {new Date().getFullYear()} Codekaro Forms Admin. All rights
+            reserved.
           </p>
         </div>
       </footer>

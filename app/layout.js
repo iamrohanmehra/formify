@@ -13,24 +13,24 @@ const karla = Karla({
 
 export const metadata = {
   metadataBase: new URL("https://forms.codekaro.in"),
-  title: "Codekaro Formify - Online Form Building Platform",
+  title: "Codekaro Forms - Online Form Building Platform",
   description:
-    "Create, manage, and share online forms easily with Codekaro Formify. A powerful form builder for all your data collection needs.",
+    "Create, manage, and share online forms easily with Codekaro Forms. A powerful form builder for all your data collection needs.",
   robots: {
     index: false,
     follow: false,
   },
   openGraph: {
-    title: "Codekaro Formify - Online Form Building Platform",
+    title: "Codekaro Forms - Online Form Building Platform",
     description:
-      "Create, manage, and share online forms easily with Codekaro Formify. A powerful form builder for all your data collection needs.",
+      "Create, manage, and share online forms easily with Codekaro Forms. A powerful form builder for all your data collection needs.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Codekaro Formify - Online Form Building Platform",
+    title: "Codekaro Forms - Online Form Building Platform",
     description:
-      "Create, manage, and share online forms easily with Codekaro Formify. A powerful form builder for all your data collection needs.",
+      "Create, manage, and share online forms easily with Codekaro Forms. A powerful form builder for all your data collection needs.",
   },
   icons: {
     icon: "/icon.png",

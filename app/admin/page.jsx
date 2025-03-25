@@ -721,8 +721,8 @@ export default function AdminDashboard() {
               <line x1="16" y1="17" x2="8" y2="17"></line>
               <polyline points="10 9 9 9 8 9"></polyline>
             </svg>
-            <h1 className="text-lg sm:text-xl font-medium text-[#37404A]">
-              Formify Admin
+            <h1 className="text-2xl font-semibold text-[#37404A]">
+              Codekaro Forms Admin
             </h1>
           </div>
 
@@ -1245,8 +1245,8 @@ export default function AdminDashboard() {
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 py-3 sm:py-4 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <p className="text-xs sm:text-sm text-gray-500 text-center">
-            © {new Date().getFullYear()} Formify Admin Panel. All rights
+          <p className="text-sm text-gray-500 text-center">
+            © {new Date().getFullYear()} Codekaro Forms Admin Panel. All rights
             reserved.
           </p>
         </div>

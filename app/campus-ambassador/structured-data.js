@@ -4,9 +4,9 @@ export default function generateStructuredData() {
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Campus Ambassador Program | Codekaro Formify",
+    name: "Campus Ambassador Program | Codekaro Forms",
     description:
-      "Apply to become a Codekaro Campus Ambassador and represent us at your college or university.",
+      "Join Codekaro's Campus Ambassador Program and help us grow our community of developers.",
     url: `${baseUrl}/campus-ambassador`,
     mainEntity: {
       "@type": "EducationalOccupationalProgram",

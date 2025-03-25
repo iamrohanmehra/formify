@@ -1,8 +1,7 @@
 export const metadata = {
   metadataBase: new URL("https://forms.codekaro.in"),
-  title: "General Registration Form | Codekaro Formify",
-  description:
-    "Register for Codekaro courses and events with our easy-to-use online form.",
+  title: "General Registration Form | Codekaro Forms",
+  description: "A simple and elegant registration form for general use cases.",
   openGraph: {
     title: "Register with Codekaro",
     description:
@@ -14,6 +13,10 @@ export const metadata = {
     title: "Register with Codekaro",
     description:
       "Complete our registration form to join Codekaro courses and events.",
+  },
+  robots: {
+    index: false,
+    follow: false,
   },
 };
 

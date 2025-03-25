@@ -31,7 +31,7 @@ export default function Home() {
               <line x1="16" y1="17" x2="8" y2="17"></line>
               <polyline points="10 9 9 9 8 9"></polyline>
             </svg>
-            Codekaro Formify
+            Codekaro Forms
           </Link>
 
           <Link
@@ -54,7 +54,7 @@ export default function Home() {
           <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
             <div className="bg-[#37404A] px-6 py-4">
               <h1 className="text-[24px] font-[500] text-white">
-                Codekaro Formify
+                Codekaro Forms
               </h1>
               <p className="text-gray-300 text-sm mt-1">
                 Create and manage online forms easily
@@ -65,7 +65,7 @@ export default function Home() {
               <div className="flex flex-col items-center">
                 <div className="text-center mb-6">
                   <h2 className="text-xl font-medium text-[#37404A] mb-2">
-                    Welcome to Codekaro Formify
+                    Welcome to Codekaro Forms
                   </h2>
                   <p className="text-[#37404AB3] text-base">
                     If you have a specific form URL, you can navigate directly
@@ -105,7 +105,7 @@ export default function Home() {
       <footer className="bg-white border-t border-gray-200 py-4 mt-auto">
         <div className="max-w-7xl mx-auto px-6">
           <p className="text-sm text-gray-500 text-center">
-            © {new Date().getFullYear()} Codekaro Formify. All rights reserved.
+            © {new Date().getFullYear()} Codekaro Forms. All rights reserved.
           </p>
         </div>
       </footer>
